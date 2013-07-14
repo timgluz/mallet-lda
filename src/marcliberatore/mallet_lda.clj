@@ -11,15 +11,30 @@
 ;; instance list.
 
 (ns marcliberatore.mallet-lda
+  (:require [marcliberatore.core :refer [MLTopicModelOps]])
   (:import [cc.mallet.types Alphabet FeatureSequence Instance InstanceList])
-  (:import cc.mallet.topics.ParallelTopicModel))
+  (:import [cc.mallet.topics ParallelTopicModel]))
+
+MLTopicModelOps
+
+(extend-type cc.mallet.topics.ParallelTopicModel
+  MLTopicModelOps
+  (get-alphabet [this] (.getAlphabet this))
+  (get-topic-alphabet [this] (.topicAlphabet this))
+  (get-topic-bits [this] (.topicBits this))
+  (get-num-types [this] (.numTypes this))
+  (get-top-words [this max-word-count]
+      (for [word-list-per-topic (.getTopWords this max-word-count)] 
+        (into [] word-list-per-topic))))
+
+(defn make-model [num-topics] 
+  (ParallelTopicModel. num-topics))
 
 ;; ## Instance and InstanceList Wrappers 
 ;;
 ;; All instances in an InstanceList must share a common alphabet,
 ;; hence the passing around of the Alphabet object in the functions
 ;; below.
-
 (defn- make-feature-sequence
   "Instantiate a FeatureSequence with a collection of tokens,
   using the provided Alphabet to handle symbols."
@@ -73,7 +88,7 @@
           optimize-burn-in 20
           num-threads (.availableProcessors (Runtime/getRuntime))
           random-seed -1 }}]
-     (doto (ParallelTopicModel. num-topics)    
+     (doto (make-model num-topics)    
        (.addInstances instance-list)
        (.setNumIterations num-iter)
        (.setOptimizeInterval optimize-interval)
@@ -81,3 +96,4 @@
        (.setNumThreads num-threads)
        (.setRandomSeed random-seed)
        .estimate)))
+
