@@ -22,15 +22,16 @@ Feedback and pull requests welcome!
 
 ```clojure
 (ns example
-  (:require [marcliberatore.mallet-lda :refer [make-instance-list lda]]))
+  (:require [marcliberatore.mallet.lda :as lda]))
 
 ...
 
-(let [data [[1 ["a" "little" "lamb"]]  
-            [2 ["row" "your" "boat"]]
-            ...]
-      instance-list (make-instance-list data)]
-  (lda instance-list))
+(let [data (lda/make-instance-list 
+				[[1 ["a" "little" "lamb"]]  
+            	 [2 ["row" "your" "boat"]]])
+  	  the-model (lda/make-model instance-list)]
+  	  
+	(lda/get-top-words the-model))
   
 ...
 
@@ -38,7 +39,7 @@ Feedback and pull requests welcome!
 
 ## TODO
 
-Write an idiomatic wrapper over the return value of `(lda)`.
+Add protocols and add more implementations for importing data, showing results, serializing models and estimating results
 
 ## License
 

@@ -1,4 +1,4 @@
-(ns marcliberatore.mallet-lda-test
+(ns marcliberatore.mallet.lda-test
   (:use [clojure.test]))
 
 (deftest demo

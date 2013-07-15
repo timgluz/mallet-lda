@@ -1,5 +1,4 @@
-(ns marcliberatore.core
-  (:import [cc.mallet.topics ParallelTopicModel]))
+(ns marcliberatore.mallet.lda)
 
 ;;TODO: ask more documentation && finish it
 ;;(defprotocol MLModelEstimator

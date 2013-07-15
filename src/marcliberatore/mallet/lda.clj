@@ -10,12 +10,11 @@
 ;; instance lists. To create a topic model, you must first make an
 ;; instance list.
 
-(ns marcliberatore.mallet-lda
-  (:require [marcliberatore.core :refer [MLTopicModelOps]])
+(ns marcliberatore.mallet.lda
   (:import [cc.mallet.types Alphabet FeatureSequence Instance InstanceList])
   (:import [cc.mallet.topics ParallelTopicModel]))
 
-MLTopicModelOps
+(load "protocols")
 
 (extend-type cc.mallet.topics.ParallelTopicModel
   MLTopicModelOps
@@ -27,7 +26,7 @@ MLTopicModelOps
       (for [word-list-per-topic (.getTopWords this max-word-count)] 
         (into [] word-list-per-topic))))
 
-(defn make-model [num-topics] 
+(defn- init-model [num-topics] 
   (ParallelTopicModel. num-topics))
 
 ;; ## Instance and InstanceList Wrappers 
@@ -74,7 +73,7 @@ MLTopicModelOps
 ;;
 ;; though you probably will load your data from elsewhere.
 
-(defn lda
+(defn make-model
   "Return a topic model (ParallelTopicModel) on the given
   instance-list, using the optional parameters if specified. The
   default parameters will run fairly quickly, but will not return
@@ -83,12 +82,12 @@ MLTopicModelOps
     {:keys [num-topics num-iter optimize-interval optimize-burn-in
             num-threads random-seed]
      :or {num-topics 10
-          num-iter 100
+          num-iter 10
           optimize-interval 10
           optimize-burn-in 20
           num-threads (.availableProcessors (Runtime/getRuntime))
           random-seed -1 }}]
-     (doto (make-model num-topics)    
+     (doto (init-model num-topics)    
        (.addInstances instance-list)
        (.setNumIterations num-iter)
        (.setOptimizeInterval optimize-interval)
