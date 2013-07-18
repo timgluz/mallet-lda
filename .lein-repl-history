@@ -147,3 +147,17 @@ mallet/get-top-words
 (def the-model (lda/make-model example-data :num-iter 1))
 (get-top-words the-model 5)
 (lda/get-top-words the-model 5)
+(def 1month-ago 1)
+(def month-ago 1)
+Newest.new Product.random_product
+reload!
+Newest.new Product.random_product
+reload!
+(require '[marcliberatore.mallet.lda :as lda] :reload-all)
+(def example-data (lda/make-instance-list [[1 ["ruby" "rails" "test"]]]))
+(def the-model (lda/make-model example-data :num-iter 1))
+(lda/get-topic-doc-counts the-model)
+(require '[marcliberatore.mallet.lda :as lda] :reload-all)
+(lda/get-topic-doc-counts the-model)
+(require '[marcliberatore.mallet.lda :as lda] :reload-all)
+(lda/get-topic-doc-counts the-model)

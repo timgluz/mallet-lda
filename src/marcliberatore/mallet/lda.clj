@@ -22,6 +22,9 @@
   (get-topic-alphabet [this] (.topicAlphabet this))
   (get-topic-bits [this] (.topicBits this))
   (get-num-types [this] (.numTypes this))
+  (get-topic-doc-counts [this]
+    (for [doc-list (.topicDocCounts this)]
+      (into [] doc-list)))
   (get-top-words [this max-word-count]
       (for [word-list-per-topic (.getTopWords this max-word-count)] 
         (into [] word-list-per-topic))))
