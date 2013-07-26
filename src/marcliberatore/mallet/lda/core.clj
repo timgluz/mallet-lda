@@ -53,6 +53,7 @@
   (require '[marcliberatore.mallet.lda :as lda])
   (require '[marcliberatore.mallet.utils :as lda-utils])
   (require '[marcliberatore.mallet.alphabet :as lda-abc])
+  (require '[marcliberatore.mallet.instance :as instance :refer [make-instance-list]])
 
   (def the-model (lda/make-model))
 
@@ -66,6 +67,11 @@
   (lda/train the-model training-data)
   (lda/get-top-words the-model 5)
   (lda/get-topic-probabilities the-model 0)
+
+  (the-i (nth training-data 0))
+  (instance/get-name the-i)
+  (instance/get-data the-i)
+
 )
 
 (defn make-model

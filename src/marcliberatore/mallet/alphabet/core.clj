@@ -11,13 +11,6 @@
     (.startGrowth this))
   (stop-growth [this]
     (.stopGrowth this))
-  clojure.lang.Seqable
-  (seq [this] nil)
   ;;TODO: how to make it as clojure seq???
-  MLAlphabetCount 
-  (count [this]
-    (.size this))
-  MLAlphabetLookup
-  (nth [the-index]
-    (.lookupIndex this the-entry))
-  )
+  (get-size [this]
+    (.size this)))

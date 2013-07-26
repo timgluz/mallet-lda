@@ -1,3 +1,7 @@
+
+**NB!** This version is going to break current interface because i'm refactoring code to
+own namespaces.
+
 # mallet-lda
 
 This project is a minimal Clojure wrapper over the LDA topic modeling
@@ -34,7 +38,35 @@ Feedback and pull requests welcome!
 	(lda/get-top-words the-model))
   
 ...
+```
 
+### Demo workflow on REPL
+
+```clojure
+    
+  (require '[marcliberatore.mallet.lda :as lda])
+  (require '[marcliberatore.mallet.utils :as lda-utils])
+  (require '[marcliberatore.mallet.alphabet :as lda-abc])
+  (require '[marcliberatore.mallet.instance :as instance :refer [make-instance-list]])
+
+  (def the-model (lda/make-model))
+
+  (def training-data (lda/make-instance-list 
+                       [
+                          [1 ["ruby" "lda" "test" "rails"]]
+                          [2 ["python" "web" "django"]]
+                          [3 ["c" "http" "server"]]
+                        ]))
+
+  (lda/train the-model training-data)
+  (lda/get-top-words the-model 5)
+  (lda/get-topic-probabilities the-model 0)
+
+  (the-i (nth training-data 0))
+  (instance/get-name the-i)
+  (instance/get-data the-i)
+
+  ;;TODO training, estimating and validation
 ```
 
 ## TODO
