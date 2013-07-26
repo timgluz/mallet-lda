@@ -466,3 +466,18 @@ the-i
 (instance/unlock the-i)
 (instance/locked? the-i)
 (instance/lock the-i)
+  (require '[marcliberatore.mallet.instance :as instance :refer [make-instance-list]])
+  (def training-data (lda/make-instance-list 
+                       [
+                          [1 ["ruby" "lda" "test" "rails"]]
+                          [2 ["python" "web" "django"]]
+                          [3 ["c" "http" "server"]]
+                        ]))
+  (def training-data (make-instance-list 
+                       [
+                          [1 ["ruby" "lda" "test" "rails"]]
+                          [2 ["python" "web" "django"]]
+                          [3 ["c" "http" "server"]]
+                        ]))
+(for [the-i (seq trainind-data)] the-i)
+(for [the-i (seq training-data)] the-i)

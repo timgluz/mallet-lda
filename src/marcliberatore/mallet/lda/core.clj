@@ -26,6 +26,11 @@
       (do
         (add-instances this training-data)
         (.estimate this)))
+    (estimate [this instances]
+      (let [inferencer (.getInferencer this)]
+        (for [the-instance (seq instances)]
+          (into []
+                (.getSampledDistribution this the-instance 10 1 5)))))
   MLTopicModelOps
     (get-alphabet [this] (.getAlphabet this))
     (get-topic-alphabet [this] (.topicAlphabet this))
@@ -57,7 +62,7 @@
 
   (def the-model (lda/make-model))
 
-  (def training-data (lda/make-instance-list 
+  (def training-data (make-instance-list 
                        [
                           [1 ["ruby" "lda" "test" "rails"]]
                           [2 ["python" "web" "django"]]
