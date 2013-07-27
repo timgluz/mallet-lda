@@ -11,6 +11,7 @@ Toolkit.
 [MALLET]:http://mallet.cs.umass.edu/
 
 ## Installation
+[![Dependency Status](http://www.versioneye.com/clojure/marcliberatore.mallet-lda:marcliberatore.mallet-lda/0.1.1/badge.png)](http://www.versioneye.com/clojure/marcliberatore.mallet-lda:marcliberatore.mallet-lda/0.1.1)
 
 The latest stable release is 0.1.0.
 
