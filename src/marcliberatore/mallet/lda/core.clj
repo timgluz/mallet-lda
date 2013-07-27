@@ -19,16 +19,16 @@
     (add-instances [this instances]
       (when-not (nil? instances)
         (.addInstances this instances)))
-    (get-instances [this instances]
+    (get-instances [this]
       (.getData this))
     (train-run [this]
-      (.estimate this)
+      (when (< 0 (-> this get-instances count))
+        (.estimate this))
       this)
     (train [this training-data]
       (do
         (add-instances this training-data)
-        (.estimate this)
-        this))
+        (train-run this)))
     (estimate [this instances settings]
       (let [the-inferencer (.getInferencer this)
             {:keys [num-iters thinning burnin]
