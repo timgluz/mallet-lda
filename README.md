@@ -81,6 +81,12 @@ Feedback and pull requests welcome!
   (def estimator-settings {:num-iters 10 :thinning 5 :burnin 1}) 
   (lda/estimate the-model validate-data estimator-settings)
 
+  ;;serializing models
+  (require '[clojure.java.io :as io])
+  (def the-filepath "/Users/mallet/model1.mdl")
+  (lda/spit-model the-model the-filepath)
+  (lda/slurp-model (io/as-file the-filepath)) ;;returns new model objects
+
 ```
 
 ## TODO

@@ -21,3 +21,14 @@
   (get-num-topics [this] "Returns number of topics")
   (get-top-words [this n] "returns top words per topics")
   (get-topic-probabilities [this doc-id] "return list of probabilities over topics"))
+
+(defprotocol MLModelWriter
+  "Protocol for saving models somewhere."
+  (spit-model [this the-target]))
+
+(defprotocol MLModelReader
+  "Protocol to read model from some external place"
+  (slurp-model [this]
+               [this the-source]))
+
+

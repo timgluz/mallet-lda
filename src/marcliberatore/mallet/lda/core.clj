@@ -11,6 +11,7 @@
 ;; instance list.
 
 (ns marcliberatore.mallet.lda
+  (:require [clojure.java.io :as io])
   (:import [cc.mallet.topics ParallelTopicModel]))
 
 (extend-type cc.mallet.topics.ParallelTopicModel
@@ -54,7 +55,20 @@
       (try
         (into [] (.getTopicProbabilities this doc-id))
         (catch IndexOutOfBoundsException e 
-          (print  (str "Doc id was bigger than index: " (.getMessage e)))))))
+          (print  (str "Doc id was bigger than index: " (.getMessage e))))))
+  MLModelWriter
+  (spit-model [this the-target]
+    (.write this (io/as-file the-target))
+    the-target))
+
+(extend-type java.io.File
+  MLModelReader
+  (slurp-model [this]
+    (try
+      (ParallelTopicModel/read this)
+      (catch Exception e
+        (print "Cant read model: " (.getMessage e))))   
+    ))
 
 (defn init-model [num-topics]
   "initializes plain parallel LDA
