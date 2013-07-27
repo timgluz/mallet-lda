@@ -14,9 +14,9 @@
   "Protocol for mallets instancelist"
   (add [this the-instance])
   (add-weighted [this the-instance the-weight])
-  (split [this proportions] "")
-  (sub-list [this start end])
-  (size [this])
+  (split [this proportions] "divides instances to sublist propotionally, acceptable format: [4 2.0] ")
+  (split-by-counts [this counts] "divides instance list to sub-lists each has nth counts elements in it")
+  (sub-list [this start end] "returns instance list which includes elements from start to end prosition.")
   (remove-instance [this the-instance])
   (remove-index [this the-index])
   (clear [this]))

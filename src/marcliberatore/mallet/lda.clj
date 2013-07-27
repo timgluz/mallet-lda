@@ -14,4 +14,3 @@
 
 (load "lda/protocols")
 (load "lda/core")
-(load "lda/instance")

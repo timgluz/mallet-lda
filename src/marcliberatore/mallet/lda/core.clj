@@ -21,16 +21,22 @@
     (get-instances [this instances]
       (.getData this))
     (train-run [this]
-      (.estimate this))
+      (.estimate this)
+      this)
     (train [this training-data]
       (do
         (add-instances this training-data)
-        (.estimate this)))
-    (estimate [this instances]
-      (let [inferencer (.getInferencer this)]
+        (.estimate this)
+        this))
+    (estimate [this instances settings]
+      (let [the-inferencer (.getInferencer this)
+            {:keys [num-iters thinning burnin]
+             :or {num-iters 10
+                  thinning 5
+                  burnin 1}} settings]
         (for [the-instance (seq instances)]
           (into []
-                (.getSampledDistribution this the-instance 10 1 5)))))
+                (.getSampledDistribution the-inferencer the-instance num-iters thinning burnin)))))
   MLTopicModelOps
     (get-alphabet [this] (.getAlphabet this))
     (get-topic-alphabet [this] (.topicAlphabet this))
@@ -50,40 +56,27 @@
         (catch IndexOutOfBoundsException e 
           (print  (str "Doc id was bigger than index: " (.getMessage e)))))))
 
-(defn init-model [num-topics] 
+(defn init-model [num-topics]
+  "initializes plain parallel LDA
+  Arguments:
+    num-topics - (required) number of topics [int]" 
   (ParallelTopicModel. num-topics))
-
-(comment
-    
-  (require '[marcliberatore.mallet.lda :as lda])
-  (require '[marcliberatore.mallet.utils :as lda-utils])
-  (require '[marcliberatore.mallet.alphabet :as lda-abc])
-  (require '[marcliberatore.mallet.instance :as instance :refer [make-instance-list]])
-
-  (def the-model (lda/make-model))
-
-  (def training-data (make-instance-list 
-                       [
-                          [1 ["ruby" "lda" "test" "rails"]]
-                          [2 ["python" "web" "django"]]
-                          [3 ["c" "http" "server"]]
-                        ]))
-
-  (lda/train the-model training-data)
-  (lda/get-top-words the-model 5)
-  (lda/get-topic-probabilities the-model 0)
-
-  (the-i (nth training-data 0))
-  (instance/get-name the-i)
-  (instance/get-data the-i)
-
-)
 
 (defn make-model
   "Return a topic model (ParallelTopicModel) on the given
   instance-list, using the optional parameters if specified. The
   default parameters will run fairly quickly, but will not return
-  high-quality topics."
+  high-quality topics.
+  Arguments: 
+    :num-topics        - (optional) number of topics
+    :num-iter          - (optional) number of iterations
+    :optimize-interval - (optional)
+    :optimize-burn     - (optional)
+    :num-threads       - (optional) number of threads
+    :random-seed       - (optional) random seed to use fixed random generator
+  Returns:
+    the initialized model's object
+  "
   ([& {:keys [num-topics num-iter optimize-interval optimize-burn-in 
             num-threads random-seed]
      :or {num-topics 10

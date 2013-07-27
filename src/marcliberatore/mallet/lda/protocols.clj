@@ -8,7 +8,7 @@
   (get-instances [this])
   (train-run [this] "trains model, which data is already initialized")
   (train [this training-instances] "sets training data before it runs training iterations")
-  (estimate [this instances] "estimates topic probabilities for given instances; returns lazy-seq")
+  (estimate [this instances settings] "estimates topic probabilities for given instances; returns lazy-seq")
   (validate [this test-instances] "validates performance of model"))
 
 (defprotocol MLTopicModelOps

@@ -33,7 +33,9 @@
   (add-weighted [this the-instance the-weight]
     (.add this the-instance the-weight))
   (split [this proportions]
-    (.split this proportions))
+    (.split this (double-array proportions)))
+  (split-by-counts [this counts]
+    (.splitInOrder this (int-array count)))
   (sub-list [this start end]
     (.subList this start end))
   (size [this]
