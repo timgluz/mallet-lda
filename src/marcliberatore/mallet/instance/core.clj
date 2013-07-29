@@ -54,7 +54,7 @@
   (get-target-alphabet [this]
     (.getTargetAlphabet this)))
 
-(defn init-alphabet
+(defn init-alphabet []
   (Alphabet.))
 
 (defn init-instance 
