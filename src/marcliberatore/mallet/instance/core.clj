@@ -54,6 +54,9 @@
   (get-target-alphabet [this]
     (.getTargetAlphabet this)))
 
+(defn init-alphabet
+  (Alphabet.))
+
 (defn init-instance 
   ([feature-seq the-target the-name] 
     (init-instance feature-seq the-target the-name nil))
@@ -91,10 +94,10 @@
   a pairing of a document id and the collection of tokens for that
   document. Document ids must be unique, and tokens must be strings."
   ([documents]
-     (let [alphabet (Alphabet.)
-           instance-list (init-instance-list alphabet)]
+   (make-instance-list documents (init-alphabet)))
+  ([documents alphabet]
+     (let [instance-list (init-instance-list alphabet)]
        (doseq [[id tokens] documents]
          (add instance-list (make-instance id tokens alphabet)))
        instance-list)))
-
 
